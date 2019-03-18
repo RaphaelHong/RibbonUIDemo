@@ -1,0 +1,79 @@
+#pragma once
+
+#define BTN_SETBLENDWID_L    110
+#define BTN_SETBLENDWID_T    111
+#define BTN_SETBLENDWID_R    112
+#define BTN_SETBLENDWID_B    113
+#define BTN_SETPUREWHITE     114
+#define BTN_DEFAULTPARAM     115
+#define BTN_BLENDTEST        116
+#define BTN_ADVANCEDBLEND    117
+
+#define CHECKBOX_LEFTBLEND   120
+#define CHECKBOX_TOPBLEND    121
+#define CHECKBOX_RIGHTBLEND  122
+#define CHECKBOX_BOTTOMBLEND 123
+#define CHECKBOX_ONOFFBLEND  124
+
+#define LEFT_BLEND           0
+#define TOP_BLEND            1
+#define RIGHT_BLEND	         2
+#define BOTTOM_BLEND         3
+
+// CMGblendsetDlg 对话框
+
+class CMGblendsetDlg : public CXTPResizeDialog
+{
+	DECLARE_DYNAMIC(CMGblendsetDlg)
+
+public:
+	CMGblendsetDlg(CWnd* pParent = NULL);   // 标准构造函数
+	virtual ~CMGblendsetDlg();
+
+// 对话框数据
+	enum { IDD = IDD_DLG_MG_BLEND };
+
+	CXTPPropertyGrid m_wndPropertyGrid;
+
+	int m_bEnableBlending;  //开启/关闭融合功能
+
+	int m_nBlendwidth[4];   //四边融合带宽度
+	int m_nLastWidth[4];    //记录上一次的融合带宽度
+	int m_bPureWhite[4];    //1 非纯白 2纯白
+	int m_nWhiteThL[4];     //纯白阀值
+	float m_fAlpha[4][2];   //Alpha值 [融合带][纯白]
+	float m_fGamma[4][2];   //Gamma值 [融合带][纯白]
+	float m_fP[4][2];       //P值 [融合带][纯白]
+
+private:
+	void OnBlendWidthChanged(CXTPPropertyGridItem *pItem, int nBlendSel);           //融合带宽度变化
+	void ShowHideBlendParamItem(int nBlendSel, BOOL bShowHide=TRUE/*TRUE隐藏*/);    //显示和隐藏融合参数有关的所有子项
+	void ShowHideChildItem(CXTPPropertyGridItem *pParentItem, BOOL bShowHide=TRUE); //显示隐藏某节点的所有子节点
+
+	void SetOnBlending();                         //开启/关闭融合功能
+	void SetBlendWidth(int nBlendSel);                       //设置融合带宽度
+	void SetPureWhiteThreshold(int nBlendSel);               //设置纯白阀值
+	void SetAlphaGammaP(int nBlendSel, BOOL bDefault=FALSE); //测试融合参数
+ 
+	void OnPropertyGridItemValueChanged(CXTPPropertyGridItem *pItem);          //属性框中的子项值变化
+	void OnPropertyGridItemSelectionChanged(CXTPPropertyGridItem *pItem);      //属性框中子项焦点变化
+	void OnPropertyGridInplaceButtonDown(CXTPPropertyGridInplaceButton *pBtn); //属性框中的内嵌按钮按下
+	void OnPropertyGridItemEnChanged(CXTPPropertyGridInplaceEdit *pEdit);      //属性框中的子项编辑框正在编辑中
+
+	void SetAdvancedBlendParam();
+
+	int m_nBlendSel;
+
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+
+	DECLARE_MESSAGE_MAP()
+public:
+	virtual BOOL OnInitDialog();
+	virtual void OnOK();
+	virtual void OnCancel();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg LRESULT OnBlendGridNotify(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+};

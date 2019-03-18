@@ -1,0 +1,549 @@
+// MGcolorsetDlg.cpp : 实现文件
+//
+
+#include "stdafx.h"
+#include "MVintergrationController.h"
+#include "MGcolorsetDlg.h"
+#include "MGeoMainDlg.h"
+
+
+// CMGcolorsetDlg 对话框
+
+IMPLEMENT_DYNAMIC(CMGcolorsetDlg, CXTPResizeDialog)
+
+CMGcolorsetDlg::CMGcolorsetDlg(CWnd* pParent /*=NULL*/)
+	: CXTPResizeDialog(CMGcolorsetDlg::IDD, pParent)
+	, m_nBlendOpt(0)
+{
+	m_pColorView = NULL;
+
+	m_nColorType = 0;
+	for (int i=0; i<4; i++)	{
+		m_nColorPosStd[i] = 128;
+		m_nColorPosCrt[i] = 160;
+	}
+
+	for (int i=0; i<256; i++) {
+		m_nColorStd[i] = i;
+		m_nColorCrt[i] = i;
+	}
+
+	m_IsBtnDownAtCtrlPtCrt = FALSE;
+	m_IsBtnDownAtCtrlPtStd = FALSE;
+}
+
+CMGcolorsetDlg::~CMGcolorsetDlg()
+{
+}
+
+void CMGcolorsetDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CXTPResizeDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_GBOX_TESTMODE, m_GboxTestMode);
+	DDX_Control(pDX, IDC_RADIO_SOURCETEST, m_RadioSrcTest);
+	DDX_Control(pDX, IDC_RADIO_IMAGETEST, m_RadioImgTest);
+
+	DDX_Control(pDX, IDC_GBOX_BLENDOPT, m_GboxBlendOpt);
+	DDX_Control(pDX, IDC_RADIO_CANCELBLEND, m_RadioCancelB);
+	DDX_Control(pDX, IDC_RADIO_BLACKBLEND, m_RadioBlackB);
+	DDX_Control(pDX, IDC_RADIO_RESUMEBLEND, m_RadioResumeB);
+
+	DDX_Control(pDX, IDC_GBOX_COLOR, m_GboxColorSel);
+	DDX_Control(pDX, IDC_RADIO_RED, m_RadioRed);
+	DDX_Control(pDX, IDC_RADIO_GREEN, m_RadioGreen);
+	DDX_Control(pDX, IDC_RADIO_BLUE, m_RadioBlue);
+	DDX_Control(pDX, IDC_RADIO_WHITE, m_RadioWhite);
+
+	DDX_Control(pDX, IDC_GBOX_AJUSTMETHOD, m_GboxMethod);
+	DDX_Control(pDX, IDC_RADIO_LINEAR, m_RadioLinear);
+	DDX_Control(pDX, IDC_RADIO_REGION, m_RadioRegion);
+
+	DDX_Control(pDX, IDC_BTN_COLOR_RESET, m_btnClrReset);
+}
+
+
+BEGIN_MESSAGE_MAP(CMGcolorsetDlg, CXTPResizeDialog)
+	ON_WM_CTLCOLOR()
+	ON_WM_SIZE()
+	ON_WM_ERASEBKGND()
+	ON_COMMAND_RANGE(IDC_RADIO_SOURCETEST, IDC_RADIO_IMAGETEST, OnRadioTestType)
+	ON_COMMAND_RANGE(IDC_RADIO_CANCELBLEND, IDC_RADIO_RESUMEBLEND, OnRadioBlendOpt)
+	ON_COMMAND_RANGE(IDC_RADIO_RED, IDC_RADIO_WHITE, OnRadioColorSel)
+	ON_COMMAND_RANGE(IDC_RADIO_LINEAR, IDC_RADIO_REGION, OnRadioAjustMethod)
+	ON_BN_CLICKED(IDC_BTN_COLOR_RESET, OnBnClickedReset)
+	
+	ON_WM_PAINT()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
+END_MESSAGE_MAP()
+
+
+// CMGcolorsetDlg 消息处理程序
+
+BOOL CMGcolorsetDlg::OnInitDialog()
+{
+	CXTPResizeDialog::OnInitDialog();
+
+	m_GboxBlendOpt.SetBorderStyle(xtpGroupBoxSingleLine);
+	m_GboxTestMode.SetBorderStyle(xtpGroupBoxSingleLine);
+	m_GboxColorSel.SetBorderStyle(xtpGroupBoxSingleLine);
+	m_GboxMethod.SetBorderStyle(xtpGroupBoxSingleLine);
+
+	ResizeIt();
+	SetControlTheme(xtpControlThemeResource);
+
+	m_RadioRed.SetCheck(1);
+	m_RadioSrcTest.SetCheck(1);
+	m_RadioLinear.SetCheck(1);
+
+	//CreateView();
+
+	//创建背景画刷
+	m_redBrush.CreateSolidBrush(RGB(255,40,40));
+	m_greenBrush.CreateSolidBrush(RGB(40,200,40));
+	m_blueBrush.CreateSolidBrush(RGB(100,100,255));
+	//m_whiteBrush.CreateSolidBrush(RGB(240,220,230));
+	m_whiteBrush.CreateSolidBrush(RGB(250,175,170));
+	m_bkBrush.CreateSolidBrush(constClrDlgBk[2]);
+
+
+	return TRUE; 
+}
+
+void CMGcolorsetDlg::ResizeIt()
+{
+	SetResize(IDC_PIC_COLORVIEW, XTP_ANCHOR_TOPLEFT, XTP_ANCHOR_BOTTOMRIGHT);
+
+	SetResize(IDC_GBOX_BLENDOPT, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_CANCELBLEND, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_BLACKBLEND, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_RESUMEBLEND, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+
+	SetResize(IDC_GBOX_TESTMODE, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_SOURCETEST, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_IMAGETEST, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	
+	SetResize(IDC_GBOX_COLOR, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_RED, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_GREEN, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_BLUE, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_WHITE, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+
+	SetResize(IDC_GBOX_AJUSTMETHOD, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_LINEAR, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+	SetResize(IDC_RADIO_REGION, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+
+	SetResize(IDC_BTN_COLOR_RESET, XTP_ANCHOR_TOPRIGHT, XTP_ANCHOR_TOPRIGHT);
+}
+
+void CMGcolorsetDlg::SetControlTheme(XTPControlTheme theme)
+{
+	m_btnClrReset.SetTheme(theme);
+}
+
+void CMGcolorsetDlg::CreateView()
+{
+	CRect viewRect;
+	GetDlgItem(IDC_PIC_COLORVIEW)->GetWindowRect(viewRect);
+	ScreenToClient(&viewRect);
+
+	CWnd *pFrameWnd = this;
+	CCreateContext context;
+	context.m_pNewViewClass = RUNTIME_CLASS(CcolorsetView);
+
+	m_pColorView = (CcolorsetView *)((CFrameWnd*)pFrameWnd)->CreateView(&context);
+	ASSERT(m_pColorView);
+
+	//viewRect.InflateRect(-1,-1);
+	m_pColorView->MoveWindow(viewRect, FALSE);
+}
+
+HBRUSH CMGcolorsetDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CXTPResizeDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	if (nCtlColor == CTLCOLOR_DLG)
+	{
+		return m_bkBrush;
+	}
+	else if (nCtlColor == CTLCOLOR_BTN)
+	{
+		if      (pWnd == GetDlgItem(IDC_RADIO_RED))   return m_redBrush;
+		else if (pWnd == GetDlgItem(IDC_RADIO_GREEN)) return m_greenBrush;
+		else if (pWnd == GetDlgItem(IDC_RADIO_BLUE))  return m_blueBrush;
+		else if (pWnd == GetDlgItem(IDC_RADIO_WHITE)) return m_whiteBrush;
+		else return m_bkBrush;
+	}
+
+	return hbr;
+}
+
+void CMGcolorsetDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CXTPResizeDialog::OnSize(nType, cx, cy);
+
+	if (GetDlgItem(IDC_PIC_COLORVIEW)->GetSafeHwnd()) GetGraphicsRect();
+
+	if (m_pColorView != NULL)
+	{
+		CRect rc;
+		GetDlgItem(IDC_PIC_COLORVIEW)->GetWindowRect(&rc);
+		ScreenToClient(&rc);
+		//rc.InflateRect(-1,-1);
+		m_pColorView->MoveWindow(rc);
+		RedrawWindow();
+	}
+}
+
+BOOL CMGcolorsetDlg::OnEraseBkgnd(CDC* pDC)
+{
+	return CXTPResizeDialog::OnEraseBkgnd(pDC);
+}
+
+
+void CMGcolorsetDlg::OnRadioTestType(UINT nID)
+{
+	if (m_pColorView == NULL) return;
+
+	if (nID == IDC_RADIO_SOURCETEST)
+	{
+		if (m_pColorView->GetTestType() == 0) return;
+		m_pColorView->SetTestType(0);
+	}
+	else if (nID == IDC_RADIO_IMAGETEST)
+	{
+		if (m_pColorView->GetTestType() == 1) return;
+		m_pColorView->SetTestType(1);
+	}
+
+	m_pColorView->TestColor();
+}
+
+void CMGcolorsetDlg::OnRadioBlendOpt(UINT nID)
+{
+	if (nID == IDC_RADIO_CANCELBLEND)
+	{
+		//if (m_nBlendOpt == 2) return;
+		m_nBlendOpt = 2;
+	}
+	else if (nID == IDC_RADIO_BLACKBLEND)
+	{
+		//if (m_nBlendOpt == 1) return;
+		m_nBlendOpt = 1;
+	}
+	else if (nID == IDC_RADIO_RESUMEBLEND)
+	{
+		//if (m_nBlendOpt == 0) return;
+		m_nBlendOpt = 0;
+	}
+
+	CMGeoMainDlg *pDlg = (CMGeoMainDlg*)GetOwner();
+
+	if (theApp.CancelBlending(m_nBlendOpt, pDlg->m_boardInfo.GetBoardPort()) == -1)
+	{
+		MessageBox(_T("对不起，设置失败！"), _T("设置融合带影响"), MB_OK|MB_ICONERROR);
+
+	}
+}
+
+void CMGcolorsetDlg::OnRadioColorSel(UINT nID)
+{
+	if (nID == IDC_RADIO_RED)
+		m_nColorType = 0;
+	else if (nID == IDC_RADIO_GREEN)
+		m_nColorType = 1;
+	else if (nID == IDC_RADIO_BLUE)
+		m_nColorType = 2;
+	else if (nID == IDC_RADIO_WHITE)
+		m_nColorType = 3;
+
+	InvalidateRect(m_rcPaint);
+
+	if (m_pColorView == NULL) return;
+
+	if (nID == IDC_RADIO_RED)
+		m_pColorView->ExchangeColor(eRed);
+	else if (nID == IDC_RADIO_GREEN)
+		m_pColorView->ExchangeColor(eGreen);
+	else if (nID == IDC_RADIO_BLUE)
+		m_pColorView->ExchangeColor(eBlue);
+	else if (nID == IDC_RADIO_WHITE)
+		m_pColorView->ExchangeColor(eWhite);
+
+	m_pColorView->Invalidate();
+}
+
+void CMGcolorsetDlg::OnRadioAjustMethod(UINT nID)
+{
+	if (m_pColorView == NULL) return;
+
+	if (nID == IDC_RADIO_LINEAR)
+		m_pColorView->SetAjustMethod(eLinearMode);
+	else if (nID == IDC_RADIO_REGION)
+		m_pColorView->SetAjustMethod(eRegionMode);
+
+	m_pColorView->Invalidate();
+}
+
+void CMGcolorsetDlg::OnBnClickedReset()
+{
+	if (m_pColorView == NULL) return;
+
+	m_pColorView->ResetColor();
+}
+
+BOOL CMGcolorsetDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_RETURN || pMsg->wParam == VK_ESCAPE)
+		{
+			//防止ESC和ENTER键关闭对话框
+			return TRUE;
+		}
+
+		if (pMsg->wParam == VK_UP || pMsg->wParam == VK_DOWN)
+		{	
+			//调整颜色
+			if (m_pColorView) m_pColorView->OnVKeyUpDown(pMsg->wParam);
+
+			return TRUE;
+		}
+	}
+
+	return CXTPResizeDialog::PreTranslateMessage(pMsg);
+}
+
+void CMGcolorsetDlg::Initialize()
+{
+	UCHAR data[800] = {0};
+	CMGeoMainDlg* pOwner = (CMGeoMainDlg*)GetOwner();
+	int nPort = pOwner->m_boardInfo.GetBoardPort();
+
+	int uColor[256] = {0};
+	if (theApp.ReadColor(data, 0, nPort) != -1)
+	{
+		for(int i=0; i<3; i++)
+		{
+			for (int j=0; j<256; ++j) uColor[j] = data[i*256+j];
+
+			SetColor(uColor, i);
+		}
+	}
+
+	//for (int i=0; i<3; i++)
+	//{
+	//	if (theApp.ReadColor(data, i, nPort) != -1)
+	//	{
+	//		SetColor((int*)data, i);
+	//	}
+	//	else
+	//	{
+	//		MessageBox(_T("初始化色差数据失败！"), _T("色差校正初始化"), MB_OK|MB_ICONERROR);
+	//		return;
+	//	}
+	//}
+
+	if (m_pColorView)
+		m_pColorView->Invalidate();
+	
+}
+
+void CMGcolorsetDlg::SetColor(int *data, int nColorSel)
+{
+	if (m_pColorView)
+		m_pColorView->SetColor(data, nColorSel);
+}
+
+void CMGcolorsetDlg::GetGraphicsRect()
+{
+	GetDlgItem(IDC_PIC_COLORVIEW)->GetWindowRect(&m_rcPaint);
+	ScreenToClient(&m_rcPaint);
+
+	m_rcChart = m_rcPaint;
+	m_rcChart.InflateRect(-20,-20);
+
+	m_xScale = m_rcChart.Width()/256.0;
+	m_yScale = m_rcChart.Height()/100.0;
+}
+void CMGcolorsetDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+	
+	//获取绘图DC
+	CDC *pDC = GetDlgItem(IDC_PIC_COLORVIEW)->GetDC();
+
+	//创建内存DC
+	CDC *pMemDC = new CDC;
+	pMemDC->CreateCompatibleDC(pDC);
+
+	//选取空位图画刷
+	CBitmap bitmap, *pOldBmp;
+	bitmap.CreateCompatibleBitmap(pDC, m_rcPaint.Width(), m_rcPaint.Height());
+	pOldBmp = pMemDC->SelectObject(&bitmap);
+
+	//上底色
+	if (m_nColorType == 3) pMemDC->FillSolidRect(m_rcPaint, RGB(250, 220, 210));
+	else pMemDC->FillSolidRect(m_rcPaint, RGB(220,240,234));
+
+	CPen blkPen, *pOldPen;
+	blkPen.CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
+	pOldPen = pMemDC->SelectObject(&blkPen);
+	pMemDC->MoveTo(m_rcChart.left-7, m_rcChart.top-5);
+	pMemDC->LineTo(Round(m_rcChart.right+5),  m_rcChart.top-5);
+	pMemDC->LineTo(Round(m_rcChart.right+5),  m_rcChart.bottom+5);
+	pMemDC->LineTo(m_rcChart.left-5, m_rcChart.bottom+5);
+	pMemDC->LineTo(m_rcChart.left-5, m_rcChart.top-5);
+
+	pMemDC->SelectObject(pOldPen);
+
+	//颜色Pattern
+	int isRed = (m_nColorType==0 || m_nColorType==3) ? 1 : 0;
+	int isGrn = (m_nColorType==1 || m_nColorType==3) ? 1 : 0;
+	int isBlu = (m_nColorType==2 || m_nColorType==3) ? 1 : 0;
+	CRect rcColor;
+	for (int i=0; i<256; i++)
+	{
+		//校准颜色展示
+		rcColor.left  = m_rcChart.left + Round(i*m_xScale);
+		rcColor.top   = m_rcChart.top;
+		rcColor.right = m_rcChart.left + (i==255 ? Round(i*m_xScale+1) : Round((i+1)*m_xScale));
+		rcColor.bottom= m_rcChart.top  + Round(m_rcChart.Height()*0.25);
+		pMemDC->FillSolidRect(rcColor, RGB(i*isRed, i*isGrn, i*isBlu));
+
+
+		//标准颜色展示
+		rcColor.left  = m_rcChart.left + Round(i*m_xScale);
+		rcColor.top   = m_rcChart.top  + Round(m_rcChart.Height()*0.5);
+		rcColor.right = m_rcChart.left + (i==255 ? Round(i*m_xScale+1) : Round((i+1)*m_xScale));
+		rcColor.bottom= m_rcChart.bottom;
+		pMemDC->FillSolidRect(rcColor, RGB(i*isRed, i*isGrn, i*isBlu));
+	}
+
+	//游标
+	rcColor = CRect(m_rcChart.left + Round(m_nColorPosCrt[m_nColorType]*m_xScale) -7,
+                    m_rcChart.top  + Round(m_rcChart.Height()*0.25) + 10,
+                    m_rcChart.left + Round(m_nColorPosCrt[m_nColorType]*m_xScale) +7,
+                    m_rcChart.top  + Round(m_rcChart.Height()*0.25) + 24);
+	pMemDC->FillSolidRect(rcColor, RGB(m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isRed, m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isGrn, m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isBlu));
+	pMemDC->MoveTo(m_rcChart.left + Round(m_nColorPosCrt[m_nColorType]*m_xScale), m_rcChart.top + Round(m_rcChart.Height()*0.25));
+	pMemDC->LineTo(m_rcChart.left + Round(m_nColorPosCrt[m_nColorType]*m_xScale), m_rcChart.top + Round(m_rcChart.Height()*0.25)+11);
+
+	rcColor = CRect(m_rcChart.left + Round(m_nColorPosStd[m_nColorType]*m_xScale) -7,
+                    m_rcChart.top  + Round(m_rcChart.Height()*0.5) - 24,
+                    m_rcChart.left + Round(m_nColorPosStd[m_nColorType]*m_xScale) +7,
+                    m_rcChart.top  + Round(m_rcChart.Height()*0.5) - 10);
+	pMemDC->FillSolidRect(rcColor, RGB(m_nColorStd[m_nColorPosStd[m_nColorType]]*isRed, m_nColorStd[m_nColorPosStd[m_nColorType]]*isGrn, m_nColorStd[m_nColorPosStd[m_nColorType]]*isBlu));
+	pMemDC->MoveTo(m_rcChart.left + Round(m_nColorPosStd[m_nColorType]*m_xScale), m_rcChart.top + Round(m_rcChart.Height()*0.5));
+	pMemDC->LineTo(m_rcChart.left + Round(m_nColorPosStd[m_nColorType]*m_xScale), m_rcChart.top + Round(m_rcChart.Height()*0.5)-11);
+
+	//中间颜色对比
+	CFont font,*Oldfont;
+	VERIFY(font.CreateFont(
+		10,                        // nHeight
+		0,                         // nWidth
+		0,                         // nEscapement
+		0,                         // nOrientation
+		FW_NORMAL,                 // nWeight
+		FALSE,                     // bItalic
+		FALSE,                     // bUnderline
+		0,                         // cStrikeOut
+		ANSI_CHARSET,              // nCharSet
+		OUT_DEFAULT_PRECIS,        // nOutPrecision
+		CLIP_DEFAULT_PRECIS,       // nClipPrecision
+		DEFAULT_QUALITY,           // nQuality
+		DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
+		_T("Arial")));             // lpszFacename
+	CString strText;
+	strText.Format(_T("当前颜色:RGB(%d,%d,%d)"),m_nColorStd[m_nColorPosStd[m_nColorType]]*isRed, m_nColorStd[m_nColorPosStd[m_nColorType]]*isGrn, m_nColorStd[m_nColorPosStd[m_nColorType]]*isBlu);
+	CSize textExt;
+	textExt = pMemDC->GetTextExtent(strText);
+	Oldfont = pMemDC->SelectObject(&font);
+	pMemDC->SetBkMode(TRANSPARENT);
+	//标准颜色对比区
+	pMemDC->TextOut(m_rcChart.left, m_rcChart.top+Round(m_rcChart.Height()*0.25)+25, strText);
+	
+	rcColor = CRect(m_rcChart.left, m_rcChart.top+Round(m_rcChart.Height()*0.25)+28+textExt.cy,
+		            m_rcChart.left+Round(m_rcChart.Width()*0.5)-5, m_rcChart.top+Round(m_rcChart.Height()*0.5)-25);
+	pMemDC->FillSolidRect(rcColor, RGB(m_nColorStd[m_nColorPosStd[m_nColorType]]*isRed, m_nColorStd[m_nColorPosStd[m_nColorType]]*isGrn, m_nColorStd[m_nColorPosStd[m_nColorType]]*isBlu));
+
+	//校准颜色对比区
+	strText.Format(_T("校准颜色:RGB(%d,%d,%d)"), m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isRed, m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isGrn, m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isBlu);
+	pMemDC->TextOut(m_rcChart.left+Round(m_rcChart.Width()*0.5)+5, m_rcChart.top+Round(m_rcChart.Height()*0.25)+25, strText);
+
+	rcColor = CRect(m_rcChart.left+Round(m_rcChart.Width()*0.5)+5, m_rcChart.top+Round(m_rcChart.Height()*0.25)+28+textExt.cy,
+		            m_rcChart.right, m_rcChart.top+Round(m_rcChart.Height()*0.5)-25);
+	pMemDC->FillSolidRect(rcColor, RGB(m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isRed, m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isGrn, m_nColorCrt[m_nColorPosCrt[m_nColorType]]*isBlu));
+
+	pMemDC->SelectObject(Oldfont);
+
+	//拷贝内存DC到绘图DC
+	pDC->BitBlt(0, 0, m_rcPaint.Width(), m_rcPaint.Height(), pMemDC, 0, 0, SRCCOPY);
+
+	//释放资源
+	pMemDC->SelectObject(pOldBmp);
+	pMemDC->DeleteDC();
+	delete pMemDC;
+	pMemDC = NULL;
+
+	ReleaseDC(pDC);
+}
+
+void CMGcolorsetDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	SetCapture();
+
+	CRect rcCtrl;
+	rcCtrl = CRect(m_rcChart.left + Round(m_nColorPosCrt[m_nColorType]*m_xScale) -7,
+		m_rcChart.top  + Round(m_rcChart.Height()*0.25) + 10,
+		m_rcChart.left + Round(m_nColorPosCrt[m_nColorType]*m_xScale) +7,
+		m_rcChart.top  + Round(m_rcChart.Height()*0.25) + 24);
+	m_IsBtnDownAtCtrlPtCrt = PtInRect(rcCtrl, point);
+
+	if (!m_IsBtnDownAtCtrlPtCrt) {
+		rcCtrl = CRect(m_rcChart.left + Round(m_nColorPosStd[m_nColorType]*m_xScale) -7,
+			m_rcChart.top  + Round(m_rcChart.Height()*0.5) - 24,
+			m_rcChart.left + Round(m_nColorPosStd[m_nColorType]*m_xScale) +7,
+			m_rcChart.top  + Round(m_rcChart.Height()*0.5) - 10);
+		m_IsBtnDownAtCtrlPtStd = PtInRect(rcCtrl, point);
+	}
+
+	CXTPResizeDialog::OnLButtonDown(nFlags, point);
+}
+
+void CMGcolorsetDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	ReleaseCapture();
+
+	m_IsBtnDownAtCtrlPtStd = FALSE;
+	m_IsBtnDownAtCtrlPtCrt = FALSE;
+
+	CXTPResizeDialog::OnLButtonUp(nFlags, point);
+}
+
+void CMGcolorsetDlg::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if (m_IsBtnDownAtCtrlPtStd)
+	{
+		int nVal = Round((point.x-m_rcChart.left)/m_xScale);
+		if (nVal < 0) nVal=0;
+		if (nVal > 255) nVal=255;
+		m_nColorPosStd[m_nColorType] = nVal;
+		m_nColorPosCrt[m_nColorType] = nVal;
+
+		InvalidateRect(m_rcPaint);
+	}
+	else if (m_IsBtnDownAtCtrlPtCrt)
+	{
+		int nVal = Round((point.x-m_rcChart.left)/m_xScale);
+		if (nVal < 0) nVal=0;
+		if (nVal > 255) nVal=255;
+		m_nColorPosCrt[m_nColorType] = nVal;
+		m_nColorCrt[nVal] = nVal;
+
+		InvalidateRect(m_rcPaint);
+	}
+
+	CXTPResizeDialog::OnMouseMove(nFlags, point);
+}

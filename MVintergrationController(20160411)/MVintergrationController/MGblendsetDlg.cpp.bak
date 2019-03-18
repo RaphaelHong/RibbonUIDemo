@@ -1,0 +1,589 @@
+// MGblendsetDlg.cpp : 实现文件
+//
+
+#include "stdafx.h"
+#include "MVintergrationController.h"
+#include "MGblendsetDlg.h"
+#include "MGeoDlg.h"
+#include "AdvancedBlendParamSetDlg.h"
+
+// CMGblendsetDlg 对话框
+
+IMPLEMENT_DYNAMIC(CMGblendsetDlg, CXTPResizeDialog)
+
+CMGblendsetDlg::CMGblendsetDlg(CWnd* pParent /*=NULL*/)
+	: CXTPResizeDialog(CMGblendsetDlg::IDD, pParent)
+{
+	m_bEnableBlending = 0;
+	m_nBlendSel = LEFT_BLEND;
+
+	for(int i=0; i<4; i++)
+	{
+		m_nBlendwidth[i] = 256;
+		m_nLastWidth[i] = 256;
+		m_bPureWhite[i] = 0;
+		m_nWhiteThL[i] = 240;
+		m_fAlpha[i][0] = m_fAlpha[i][1] = float(0.5);
+		m_fGamma[i][0] = m_fGamma[i][0] = float(2.0);
+		m_fP[i][0] = m_fP[i][0] = float(2.0);
+	}
+}
+
+CMGblendsetDlg::~CMGblendsetDlg()
+{
+}
+
+void CMGblendsetDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CXTPResizeDialog::DoDataExchange(pDX);
+}
+
+
+BEGIN_MESSAGE_MAP(CMGblendsetDlg, CXTPResizeDialog)
+	ON_WM_SIZE()
+	ON_MESSAGE(XTPWM_PROPERTYGRID_NOTIFY, OnBlendGridNotify)
+	ON_WM_SHOWWINDOW()
+	ON_WM_CTLCOLOR()
+END_MESSAGE_MAP()
+
+
+// CMGblendsetDlg 消息处理程序
+
+BOOL CMGblendsetDlg::OnInitDialog()
+{
+	CXTPResizeDialog::OnInitDialog();
+
+	if (m_wndPropertyGrid.GetSafeHwnd() == 0)
+	{
+		m_wndPropertyGrid.Create( CRect(0, 0, 0, 0), this, 0 );
+		m_wndPropertyGrid.SetOwner(this);
+
+		m_wndPropertyGrid.SetTheme(xtpGridThemeResource);
+		m_wndPropertyGrid.HighlightChangedItems(TRUE);
+		m_wndPropertyGrid.SetVariableItemsHeight(TRUE); //当属性框中某一栏有多个垂直并列项，需设置此项
+
+		CFont font;
+		font.CreatePointFont(60, _T("Marlett"));
+
+		LOGFONT lf;
+		font.GetLogFont(&lf);
+
+		//添加融合带选项
+		CXTPPropertyGridItem *pBlendCategory     = m_wndPropertyGrid.AddCategory(_T("融合带设置"));
+
+		CXTPPropertyGridItemBool *pOffBlend = (CXTPPropertyGridItemBool*)pBlendCategory->AddChildItem(new CXTPPropertyGridItemBool(_T("开启/关闭融合功能"), m_bEnableBlending));
+		pOffBlend->SetDescription(_T("选中开启融合功能，非选中关闭融合功能"));
+		pOffBlend->SetID(CHECKBOX_ONOFFBLEND);
+		pOffBlend->SetCheckBoxStyle();
+
+		//******************************* 左边融合带 **************************
+		CXTPPropertyGridItemBool *pLeftBlend   = (CXTPPropertyGridItemBool*)pBlendCategory->AddChildItem(new CXTPPropertyGridItemBool(_T("← 左边"), m_nBlendwidth[0]>0));
+		pLeftBlend->SetDescription(_T("选中后才能设置融合带参数"));
+		pLeftBlend->SetID(CHECKBOX_LEFTBLEND);
+		pLeftBlend->SetCheckBoxStyle();
+		// number edit
+		CXTPPropertyGridItem *pItem = pLeftBlend->AddChildItem(new CXTPPropertyGridItemNumber(_T("左边融合带宽度"), m_nBlendwidth[0]));
+		// spin button
+		CXTPPropertyGridInplaceSpinButton *pSpin = pItem->AddSpinButton();
+		pSpin->SetMax(1024); pSpin->SetMin(0);
+		// inplace button
+		CXTPPropertyGridInplaceButton *pButton = pItem->GetInplaceButtons()->AddButton(new CXTPPropertyGridInplaceButton(BTN_SETBLENDWID_L));
+		pButton->SetCaption(_T("设置"));
+		pItem->SetHidden(m_nBlendwidth[0] <= 0);
+		
+
+		//******************************* 顶部融合带 **************************
+		CXTPPropertyGridItemBool *pTopBlend   = (CXTPPropertyGridItemBool*)pBlendCategory->AddChildItem(new CXTPPropertyGridItemBool(_T("↑ 顶部"), m_nBlendwidth[1]>0));
+		pTopBlend->SetDescription(_T("选中后才能设置融合带参数"));
+		pTopBlend->SetID(CHECKBOX_TOPBLEND);
+		pTopBlend->SetCheckBoxStyle();
+		// number edit
+		pItem = pTopBlend->AddChildItem(new CXTPPropertyGridItemNumber(_T("顶部融合带宽度"), m_nBlendwidth[1]));
+		// spin button
+		pSpin = pItem->AddSpinButton();
+		pSpin->SetMax(1024); pSpin->SetMin(0);
+		// inplace button
+		pButton = pItem->GetInplaceButtons()->AddButton(new CXTPPropertyGridInplaceButton(BTN_SETBLENDWID_T));
+		pButton->SetCaption(_T("设置"));
+		pItem->SetHidden(m_nBlendwidth[1] <= 0);
+		
+
+
+		//******************************* 右边融合带 **************************
+		CXTPPropertyGridItemBool *pRightBlend   = (CXTPPropertyGridItemBool*)pBlendCategory->AddChildItem(new CXTPPropertyGridItemBool(_T("→ 右边"), m_nBlendwidth[2]>0));
+		pRightBlend->SetDescription(_T("选中后才能设置融合带参数"));
+		pRightBlend->SetID(CHECKBOX_RIGHTBLEND);
+		pRightBlend->SetCheckBoxStyle();
+		// number edit
+		pItem = pRightBlend->AddChildItem(new CXTPPropertyGridItemNumber(_T("右边融合带宽度"), m_nBlendwidth[2]));
+		// spin button
+		pSpin = pItem->AddSpinButton();
+		pSpin->SetMax(1024); pSpin->SetMin(0);
+		// inplace button
+		pButton = pItem->GetInplaceButtons()->AddButton(new CXTPPropertyGridInplaceButton(BTN_SETBLENDWID_R));
+		pButton->SetCaption(_T("设置"));
+		pItem->SetHidden(m_nBlendwidth[2] <= 0);
+
+
+		//******************************* 底部融合带 **************************
+		CXTPPropertyGridItemBool *pBottomBlend   = (CXTPPropertyGridItemBool*)pBlendCategory->AddChildItem(new CXTPPropertyGridItemBool(_T("↓ 底部"), m_nBlendwidth[3]>0));
+		pBottomBlend->SetDescription(_T("选中后才能设置融合带参数"));
+		pBottomBlend->SetID(CHECKBOX_BOTTOMBLEND);
+		pBottomBlend->SetCheckBoxStyle();
+		// number edit
+		pItem = pBottomBlend->AddChildItem(new CXTPPropertyGridItemNumber(_T("底部融合带宽度"), m_nBlendwidth[3]));
+		// spin button
+		pSpin = pItem->AddSpinButton();
+		pSpin->SetMax(1024); pSpin->SetMin(0);
+		// inplace button
+		pButton = pItem->GetInplaceButtons()->AddButton(new CXTPPropertyGridInplaceButton(BTN_SETBLENDWID_B));
+		pButton->SetCaption(_T("设置"));
+		pItem->SetHidden(m_nBlendwidth[3] <= 0);
+
+
+		//纯白模式
+		pItem = pBlendCategory->AddChildItem(new CXTPPropertyGridItem(_T("融合模式")));
+		pItem->SetID(501);
+		pItem->SetReadOnly(TRUE);
+		CXTPPropertyGridItemOption *pOptionItem = (CXTPPropertyGridItemOption *)pItem->AddChildItem(new CXTPPropertyGridItemOption(_T("纯白模式选择"), m_bPureWhite[LEFT_BLEND]+1));
+		pOptionItem->GetConstraints()->AddConstraint(_T("非纯白模式"), 1);
+		pOptionItem->GetConstraints()->AddConstraint(_T("纯白模式"), 2);
+
+		CXTPPropertyGridItem *pItem0 = pItem->AddChildItem(new CXTPPropertyGridItemNumber(_T("纯白阀值"), 240));
+		pButton = pItem0->GetInplaceButtons()->AddButton(new CXTPPropertyGridInplaceButton(BTN_SETPUREWHITE));
+		pButton->SetCaption(_T("设置"));
+		pItem->SetHidden(TRUE);
+
+		//融合参数
+		pItem = pBlendCategory->AddChildItem(new CXTPPropertyGridItem(_T("融合参数")));
+		pItem->SetID(502);
+		pButton = pItem->GetInplaceButtons()->AddButton(new CXTPPropertyGridInplaceButton(BTN_DEFAULTPARAM));
+		pButton->SetCaption(_T("默认值"));
+		pButton = pItem->GetInplaceButtons()->AddButton(new CXTPPropertyGridInplaceButton(BTN_BLENDTEST));
+		pButton->SetCaption(_T("测试融合效果"));
+		pButton = pItem->GetInplaceButtons()->AddButton(new CXTPPropertyGridInplaceButton(BTN_ADVANCEDBLEND));
+		pButton->SetCaption(_T("高级"));
+
+		CXTPPropertyGridItemNumber *pSubItem = (CXTPPropertyGridItemNumber*)pItem->AddChildItem(new CXTPPropertyGridItemNumber(_T("Alpha 值"), 5));
+		CXTPPropertyGridInplaceSlider *pSlider = pSubItem->AddSliderControl();
+		pSlider->SetMax(10); pSlider->SetMin(0);
+		pSubItem = (CXTPPropertyGridItemNumber*)pItem->AddChildItem(new CXTPPropertyGridItemNumber(_T("Gamma 值"), 20));
+		pSlider = pSubItem->AddSliderControl();
+		pSlider->SetMax(160); pSlider->SetMin(0);
+		pSubItem = (CXTPPropertyGridItemNumber*)pItem->AddChildItem(new CXTPPropertyGridItemNumber(_T("P 值"), 20));
+		pSlider = pSubItem->AddSliderControl();
+		pSlider->SetMax(160); pSlider->SetMin(0);
+		pItem->SetHidden(TRUE);
+
+		pBlendCategory->Expand();
+		//ExpandAllGridItems(m_wndPropertyGrid.GetCategories(), TRUE);
+		m_wndPropertyGrid.SetShowInplaceButtonsAlways(TRUE);
+	}
+
+	m_wndPropertyGrid.ShowWindow(SW_HIDE);
+
+	return TRUE; 
+}
+
+
+void CMGblendsetDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CXTPResizeDialog::OnSize(nType, cx, cy);
+
+	if (m_wndPropertyGrid.GetSafeHwnd())
+	{
+		m_wndPropertyGrid.MoveWindow(0,0,cx, cy);
+	}
+}
+
+void CMGblendsetDlg::OnOK()
+{
+	//return CXTPResizeDialog::OnOK();
+}
+void CMGblendsetDlg::OnCancel()
+{
+	//return CXTPResizeDialog::OnCancel();
+}
+
+
+LRESULT CMGblendsetDlg::OnBlendGridNotify(WPARAM wParam, LPARAM lParam)
+{
+	if (wParam == XTP_PGN_DBLCLICK)
+	{
+
+	}
+	
+	if (wParam == XTP_PGN_ITEMVALUE_CHANGED)
+	{
+		//在此处理最终值，也即用户输入后确定的值	
+		CXTPPropertyGridItem *pItemChanged = (CXTPPropertyGridItem*)lParam;
+		OnPropertyGridItemValueChanged(pItemChanged);
+	}
+
+	if (wParam == XTP_PGN_SELECTION_CHANGED)
+	{
+		//选中条目发生变化
+		CXTPPropertyGridItem *pItemSelected = (CXTPPropertyGridItem*)lParam;
+		OnPropertyGridItemSelectionChanged(pItemSelected);
+	}
+
+	if (wParam == XTP_PGN_INPLACEBUTTONDOWN)
+	{
+		//在此处理内嵌按钮按下事件 相当于ON_BN_CLICKED
+		CXTPPropertyGridInplaceButton *pButton = (CXTPPropertyGridInplaceButton*)lParam;
+		OnPropertyGridInplaceButtonDown(pButton);
+	}
+
+	if (wParam == XTP_PGN_EDIT_CHANGED)
+	{
+		//在此处理当编辑框内的值变化事件 相当于编辑框的CEdit::OnEnchangedEdit
+		CXTPPropertyGridInplaceEdit* pEditChanged = DYNAMIC_DOWNCAST(CXTPPropertyGridInplaceEdit, (CWnd*)lParam);
+		OnPropertyGridItemEnChanged(pEditChanged);
+	}
+
+	return 0;
+}
+
+// 当属性框中的某子项最终值发生变化
+void CMGblendsetDlg::OnPropertyGridItemValueChanged(CXTPPropertyGridItem *pItem)
+{
+	if (pItem->GetID() == CHECKBOX_LEFTBLEND
+		||pItem->GetID() == CHECKBOX_TOPBLEND
+		||pItem->GetID() == CHECKBOX_RIGHTBLEND
+		||pItem->GetID() == CHECKBOX_BOTTOMBLEND) 
+	{   // 选中融合带
+
+		// 显示/隐藏 融合带宽度设置部分
+		ShowHideChildItem(pItem, !((CXTPPropertyGridItemBool*)pItem)->GetBool());			
+
+		// 显示/隐藏 融合参数设置部分
+		ShowHideBlendParamItem(pItem->GetID()-CHECKBOX_LEFTBLEND, !(((CXTPPropertyGridItemBool*)pItem)->GetBool() && m_nBlendwidth[pItem->GetID()-CHECKBOX_LEFTBLEND]>0));
+	}
+	else if (pItem->GetID() == CHECKBOX_ONOFFBLEND) // 开启/关闭融合功能
+	{
+		SetOnBlending();
+	}
+
+	if (pItem->IsKindOf(RUNTIME_CLASS(CXTPPropertyGridItemNumber)))
+	{
+		if      (pItem->GetCaption() == _T("左边融合带宽度")) OnBlendWidthChanged(pItem, LEFT_BLEND);
+		else if (pItem->GetCaption() == _T("顶部融合带宽度"))	OnBlendWidthChanged(pItem, TOP_BLEND);
+		else if (pItem->GetCaption() == _T("右边融合带宽度"))	OnBlendWidthChanged(pItem, RIGHT_BLEND);
+		else if (pItem->GetCaption() == _T("底部融合带宽度"))	OnBlendWidthChanged(pItem, BOTTOM_BLEND);
+		else if (pItem->GetCaption() == _T("纯白阀值"))
+		{
+			CXTPPropertyGridItemNumber *pNumber = DYNAMIC_DOWNCAST(CXTPPropertyGridItemNumber, pItem);
+			int nThreshold = pNumber->GetNumber();
+			if (nThreshold > 255) nThreshold = 255; pNumber->SetNumber(nThreshold);
+			if (nThreshold < 0) nThreshold = 0; pNumber->SetNumber(nThreshold);
+
+			if (m_nWhiteThL[m_nBlendSel] == nThreshold) return; //纯白阀值没变化
+
+			SetPureWhiteThreshold(m_nBlendSel);
+		}
+		else if (pItem->GetCaption() == _T("Alpha 值")
+			|| pItem->GetCaption() == _T("Gamma 值")
+			|| pItem->GetCaption() == _T("P 值")) SetAlphaGammaP(m_nBlendSel, FALSE);
+	}
+	else if (pItem->IsKindOf(RUNTIME_CLASS(CXTPPropertyGridItemOption)))
+	{
+		if (pItem->GetCaption() == _T("纯白模式选择"))
+		{
+			CXTPPropertyGridItemOption *pOption = DYNAMIC_DOWNCAST(CXTPPropertyGridItemOption, pItem);
+			if (m_bPureWhite[m_nBlendSel]+1 == pOption->GetOption()) return; //当前纯白模式没变
+			
+			m_bPureWhite[m_nBlendSel] = pOption->GetOption()-1;
+			ShowHideBlendParamItem(m_nBlendSel, FALSE);
+		}
+	}
+}
+
+// 当属性框子项焦点发生变化
+void CMGblendsetDlg::OnPropertyGridItemSelectionChanged(CXTPPropertyGridItem *pItem)
+{
+	if (pItem->GetID() == CHECKBOX_LEFTBLEND || pItem->GetCaption() == _T("左边融合带宽度"))
+	{
+		// 左边融合带参数
+		if (m_nBlendSel == LEFT_BLEND) return; //防止在同一个Item上点击时 不停刷新属性框
+		m_nBlendSel = LEFT_BLEND;
+		ShowHideBlendParamItem(LEFT_BLEND, !(((CXTPPropertyGridItemBool*)pItem)->GetBool() && m_nBlendwidth[m_nBlendSel]>0));
+	}
+	else if (pItem->GetID() == CHECKBOX_RIGHTBLEND || pItem->GetCaption() == _T("右边融合带宽度"))
+	{
+		//右边融合带参数
+		if (m_nBlendSel == RIGHT_BLEND) return; //防止在同一个Item上点击时 不停刷新属性框
+		m_nBlendSel = RIGHT_BLEND;
+		ShowHideBlendParamItem(RIGHT_BLEND, !(((CXTPPropertyGridItemBool*)pItem)->GetBool() && m_nBlendwidth[m_nBlendSel]>0));
+	}
+	else if (pItem->GetID() == CHECKBOX_TOPBLEND || pItem->GetCaption() == _T("顶部融合带宽度"))
+	{
+		//顶部融合带参数
+		if (m_nBlendSel == TOP_BLEND) return; //防止在同一个Item上点击时 不停刷新属性框
+		m_nBlendSel = TOP_BLEND;
+		ShowHideBlendParamItem(TOP_BLEND, !(((CXTPPropertyGridItemBool*)pItem)->GetBool() && m_nBlendwidth[m_nBlendSel]>0));
+	}
+	else if (pItem->GetID() == CHECKBOX_BOTTOMBLEND || pItem->GetCaption() == _T("底部融合带宽度"))
+	{
+		//底部融合带参数
+		if (m_nBlendSel == BOTTOM_BLEND) return; //防止在同一个Item上点击时 不停刷新属性框
+		m_nBlendSel = BOTTOM_BLEND;
+		ShowHideBlendParamItem(BOTTOM_BLEND, !(((CXTPPropertyGridItemBool*)pItem)->GetBool() && m_nBlendwidth[m_nBlendSel]>0));
+	}
+}
+
+// 当属性框内嵌按钮按下
+void CMGblendsetDlg::OnPropertyGridInplaceButtonDown(CXTPPropertyGridInplaceButton *pBtn)
+{
+	if (pBtn->GetID() == BTN_SETBLENDWID_L) //设置左边融合带宽度
+	{
+		SetBlendWidth(LEFT_BLEND);
+	}
+	else if (pBtn->GetID() == BTN_SETBLENDWID_T) //设置顶部融合带宽度
+	{
+		SetBlendWidth(TOP_BLEND);
+	}
+	else if (pBtn->GetID() == BTN_SETBLENDWID_R) //设置右边融合带宽度
+	{
+		SetBlendWidth(RIGHT_BLEND);
+	}
+	else if (pBtn->GetID() == BTN_SETBLENDWID_B) //设置底部融合带宽度
+	{
+		SetBlendWidth(BOTTOM_BLEND);
+	}
+	else if (pBtn->GetID() == BTN_SETPUREWHITE) //设置纯白阀值
+	{
+		SetPureWhiteThreshold(m_nBlendSel);
+	}
+	else if (pBtn->GetID() == BTN_DEFAULTPARAM) //默认融合参数
+	{
+		SetAlphaGammaP(m_nBlendSel, TRUE);
+	}
+	else if (pBtn->GetID() == BTN_BLENDTEST) //测试融合效果
+	{
+		SetAlphaGammaP(m_nBlendSel);
+	}
+	else if (pBtn->GetID() == BTN_ADVANCEDBLEND) //高级融合模式
+	{
+		SetAdvancedBlendParam();
+	}
+}
+
+// 当属性框子项中的编辑框中的值正在编辑中
+void CMGblendsetDlg::OnPropertyGridItemEnChanged(CXTPPropertyGridInplaceEdit *pEdit)
+{
+	if (pEdit->GetItem()->GetCaption() == _T("Alpha 值"))
+	{
+	}
+	else if (pEdit->GetItem()->GetCaption() == _T("Gamma 值"))
+	{
+	}
+	else if (pEdit->GetItem()->GetCaption() == _T("P 值"))
+	{
+	}
+}
+
+// 融合带宽度变化
+void CMGblendsetDlg::OnBlendWidthChanged(CXTPPropertyGridItem *pItem, int nBlendSel)
+{
+	CXTPPropertyGridItemNumber *pNumber = DYNAMIC_DOWNCAST(CXTPPropertyGridItemNumber, pItem);
+	int nValue = pNumber->GetNumber();
+
+	// 偶值化宽度
+	if (nValue%2 != 0) nValue = nValue < m_nLastWidth[nBlendSel] ? nValue-1 : nValue+1;
+	pNumber->SetNumber(nValue);
+
+	m_nLastWidth[nBlendSel] = nValue;
+
+	if (nValue == 0) //融合带宽度为0
+	{
+		((CXTPPropertyGridItemBool*)pItem->GetParentItem())->SetBool(FALSE);
+		pItem->SetHidden(TRUE);
+
+		ShowHideBlendParamItem(nBlendSel, TRUE);
+	}
+	else
+	{
+		ShowHideBlendParamItem(nBlendSel, FALSE);
+	}
+
+	SetBlendWidth(nBlendSel);
+}
+
+// 隐藏某节点所有的子节点
+void CMGblendsetDlg::ShowHideChildItem(CXTPPropertyGridItem *pParentItem, BOOL bShowHide/* =TRUE */)
+{
+	CXTPPropertyGridItems* pChilds = pParentItem->GetChilds();
+	for (int i=0; i<pChilds->GetCount(); i++) 
+		pChilds->GetAt(i)->SetHidden(bShowHide);
+}
+
+// 隐藏和显示融合带参数有关的所有节点，包括纯白模式和Alpha参数等
+void CMGblendsetDlg::ShowHideBlendParamItem(int nBlendSel, BOOL bShowHide)
+{
+	CXTPPropertyGridItem *pPureWhite = m_wndPropertyGrid.FindItem(_T("融合模式"));
+	if(pPureWhite) pPureWhite->SetHidden(bShowHide);
+
+	CXTPPropertyGridItem *pAlpha = m_wndPropertyGrid.FindItem(_T("融合参数"));
+	if(pAlpha) pAlpha->SetHidden(bShowHide);
+
+	if (!bShowHide) //显示相应融合带的参数
+	{
+		// 纯白模式
+		CXTPPropertyGridItemOption *pOption = (CXTPPropertyGridItemOption*)(pPureWhite->GetChilds()->GetAt(0));
+		pOption->SetOption(m_bPureWhite[nBlendSel]+1);
+
+		// 纯白阀值
+		CXTPPropertyGridItemNumber *pNumber = (CXTPPropertyGridItemNumber*)(pPureWhite->GetChilds()->GetAt(1));
+		pNumber->SetNumber(m_nWhiteThL[nBlendSel]);
+
+		// Alpha值
+		pNumber = (CXTPPropertyGridItemNumber*)(pAlpha->GetChilds()->GetAt(0));
+		pNumber->SetNumber(int(m_fAlpha[nBlendSel][m_bPureWhite[nBlendSel]]*10));
+
+		// Gamma值
+		pNumber = (CXTPPropertyGridItemNumber*)(pAlpha->GetChilds()->GetAt(1));
+		pNumber->SetNumber(int(m_fGamma[nBlendSel][m_bPureWhite[nBlendSel]]*10));
+
+		// P值
+		pNumber = (CXTPPropertyGridItemNumber*)(pAlpha->GetChilds()->GetAt(2));
+		pNumber->SetNumber(int(m_fP[nBlendSel][m_bPureWhite[nBlendSel]]*10));
+
+		CString strInfo;
+		strInfo = nBlendSel==0 ? _T("[左边融合带]") : nBlendSel==1 ? _T("[顶部融合带]") : nBlendSel==2 ? _T("[右边融合带]") : _T("[底部融合带]");
+		strInfo += m_bPureWhite[nBlendSel]==0 ? _T("-非纯白模式") : _T("-纯白模式");
+		pPureWhite->SetValue(strInfo);
+	}
+}
+
+// 开启和关闭融合功能
+void CMGblendsetDlg::SetOnBlending()
+{
+	CXTPPropertyGridItemBool *pOnOffBlend = (CXTPPropertyGridItemBool*)m_wndPropertyGrid.FindItem(CHECKBOX_ONOFFBLEND);
+	if (pOnOffBlend) m_bEnableBlending = pOnOffBlend->GetBool();
+
+	CMGeoDlg* pDlg = (CMGeoDlg*)GetOwner();
+	theApp.EnableBlend(m_bEnableBlending, pDlg->m_boardInfo.GetBoardPort());
+}
+
+// 设置融合带宽度
+void CMGblendsetDlg::SetBlendWidth(int nBlendSel)
+{
+	//从界面获取宽度值
+	CXTPPropertyGridItemNumber *pBlendWid;
+	if (nBlendSel == LEFT_BLEND)		pBlendWid = (CXTPPropertyGridItemNumber *)m_wndPropertyGrid.FindItem(_T("左边融合带宽度"));
+	else if (nBlendSel == TOP_BLEND)	pBlendWid = (CXTPPropertyGridItemNumber *)m_wndPropertyGrid.FindItem(_T("顶部融合带宽度"));
+	else if (nBlendSel == RIGHT_BLEND)	pBlendWid = (CXTPPropertyGridItemNumber *)m_wndPropertyGrid.FindItem(_T("右边融合带宽度"));
+	else if (nBlendSel == BOTTOM_BLEND)	pBlendWid = (CXTPPropertyGridItemNumber *)m_wndPropertyGrid.FindItem(_T("底部融合带宽度"));
+
+	if(pBlendWid)	m_nBlendwidth[nBlendSel] = pBlendWid->GetNumber();
+
+	//命令
+	CMGeoDlg *pDlg = (CMGeoDlg*)GetOwner();
+	theApp.SetBlendWidth((UINT*)m_nBlendwidth, pDlg->m_boardInfo.GetBoardPort());
+}
+
+// 设置纯白阀值
+void CMGblendsetDlg::SetPureWhiteThreshold(int nBlendSel)
+{
+	//从界面获取阀值
+	CXTPPropertyGridItemNumber *pWhiteLvl = (CXTPPropertyGridItemNumber*)m_wndPropertyGrid.FindItem(_T("纯白阀值"));
+	if (pWhiteLvl) m_nWhiteThL[nBlendSel] = pWhiteLvl->GetNumber();
+
+	CMGeoDlg *pDlg = (CMGeoDlg*)GetOwner();
+	theApp.SetWhiteThreshold(m_nWhiteThL[nBlendSel], pDlg->m_boardInfo.GetBoardPort());
+}
+
+// 测试融合参数
+void CMGblendsetDlg::SetAlphaGammaP(int nBlendSel, BOOL bDefault/* =FALSE */)
+{
+	if (bDefault)
+	{
+		m_fAlpha[nBlendSel][m_bPureWhite[nBlendSel]] = 0.5;
+		m_fGamma[nBlendSel][m_bPureWhite[nBlendSel]] = 2.0;
+		m_fP[nBlendSel][m_bPureWhite[nBlendSel]] = 2.0;
+
+		// 从界面获取值
+		CXTPPropertyGridItemNumber *pNumber = (CXTPPropertyGridItemNumber*)m_wndPropertyGrid.FindItem(_T("Alpha 值"));
+		pNumber->SetNumber(int(m_fAlpha[nBlendSel][m_bPureWhite[nBlendSel]]*10));
+
+		pNumber = (CXTPPropertyGridItemNumber *)m_wndPropertyGrid.FindItem(_T("Gamma 值"));
+		pNumber->SetNumber(int(m_fGamma[nBlendSel][m_bPureWhite[nBlendSel]]*10));
+
+		pNumber = (CXTPPropertyGridItemNumber *)m_wndPropertyGrid.FindItem(_T("P 值"));
+		pNumber->SetNumber(int(m_fP[nBlendSel][m_bPureWhite[nBlendSel]]*10));
+	}
+	else
+	{
+		// 从界面获取值
+		CXTPPropertyGridItemNumber *pNumber = (CXTPPropertyGridItemNumber*)m_wndPropertyGrid.FindItem(_T("Alpha 值"));
+		m_fAlpha[nBlendSel][m_bPureWhite[nBlendSel]] =  float(pNumber->GetNumber()*0.1);
+		
+		pNumber = (CXTPPropertyGridItemNumber *)m_wndPropertyGrid.FindItem(_T("Gamma 值"));
+		m_fGamma[nBlendSel][m_bPureWhite[nBlendSel]] = float(pNumber->GetNumber()*0.1);
+
+		pNumber = (CXTPPropertyGridItemNumber *)m_wndPropertyGrid.FindItem(_T("P 值"));
+		m_fP[nBlendSel][m_bPureWhite[nBlendSel]] = float(pNumber->GetNumber()*0.1);
+	}
+
+	// 命令
+	BlendParams bdp;
+
+	bdp.nBlendSel = nBlendSel;
+	bdp.nPureWhite = m_bPureWhite[nBlendSel];
+	bdp.nAlpha = (int)(m_fAlpha[nBlendSel][m_bPureWhite[nBlendSel]]* 65535);
+	bdp.nP = (int)(m_fP[nBlendSel][m_bPureWhite[nBlendSel]] * 65535/16);
+	bdp.nGamma = (int)(m_fGamma[nBlendSel][m_bPureWhite[nBlendSel]]* 65535/16);
+
+	CMGeoDlg *pDlg = (CMGeoDlg*)GetOwner();
+	theApp.TestBlendParams(&bdp, pDlg->m_boardInfo.GetBoardPort());
+}
+
+void CMGblendsetDlg::SetAdvancedBlendParam()
+{
+	//弹出高级融合参数对话框时，先判断当前通道当前选择的融合带是否有效
+	UpdateData();
+	if (m_nBlendwidth[m_nBlendSel] > 1024 || m_nBlendwidth[m_nBlendSel] < 5)
+	{
+		return (void)AfxMessageBox(_T("融合带宽度异常，有效范围为5~1024！"));
+	}
+
+	// 加载读取融合值
+	CMGeoDlg *pDlg = (CMGeoDlg*)GetOwner();
+
+	unsigned int nBlendPara[1024];
+	memset(nBlendPara, 0, sizeof(nBlendPara));
+	if (theApp.ReadblendParamDatas(nBlendPara, m_nBlendSel, m_bPureWhite[m_nBlendSel], m_nBlendwidth[m_nBlendSel], pDlg->m_boardInfo.GetBoardPort()) == -1)
+	{
+		return (void)MessageBox(_T("读取融合数据失败！"), _T("读取融合数据"), MB_OK|MB_ICONSTOP);
+	}
+
+	CAdvancedBlendParamSetDlg dlg;
+	dlg.m_nBlendWidth = m_nBlendwidth[m_nBlendSel];
+	dlg.m_nPort = pDlg->m_boardInfo.GetBoardPort();
+	dlg.m_PureWhite = m_bPureWhite[m_nBlendSel];
+	dlg.blend_alpha = m_fAlpha[m_nBlendSel][m_bPureWhite[m_nBlendSel]];
+	dlg.blend_p = m_fP[m_nBlendSel][m_bPureWhite[m_nBlendSel]];
+	dlg.blend_gamma = m_fGamma[m_nBlendSel][m_bPureWhite[m_nBlendSel]];
+	dlg.m_nBldSide = m_nBlendSel;
+	memcpy(dlg.m_nBlendVal, nBlendPara, 1024*sizeof(UINT));
+	dlg.DoModal();
+}
+
+void CMGblendsetDlg::OnShowWindow(BOOL bShow, UINT nStatus)
+{
+	CXTPResizeDialog::OnShowWindow(bShow, nStatus);
+
+	//if (bShow) MessageBox(_T("Blend set dlg showing!"));
+}
+
+HBRUSH CMGblendsetDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CXTPResizeDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	if (nCtlColor == CTLCOLOR_DLG)
+	{
+		return HBRUSH(CreateSolidBrush(constClrDlgBk[3]));
+	}
+	
+	return hbr;
+}

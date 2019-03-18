@@ -1,0 +1,385 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B1806C38-6280-411D-AEEB-2FCAC115F2D0}</ProjectGuid>
+    <RootNamespace>VS2008Ribbon</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Zm114 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v15.0.1\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v15.0.1\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)\VideoRouter.exe</OutputFile>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v15.0.1\Lib\vc90;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v15.0.1\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v15.0.1\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)MM10X Serdes App.exe</OutputFile>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\Codejock Software\MFC\Xtreme ToolkitPro v15.0.1\Lib\vc90;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Dialog components\BackupAndRestoreDlg.h" />
+    <ClInclude Include="Dialog components\ConnectConfigDlg.h" />
+    <ClInclude Include="Dialog components\InplaceEdit.h" />
+    <ClInclude Include="Dialog components\InputConfigDlg.h" />
+    <ClInclude Include="Dialog components\LoginDlg.h" />
+    <ClInclude Include="Dialog components\MachinePanelDlg.h" />
+    <ClInclude Include="Dialog components\MMListCtrl.h" />
+    <ClInclude Include="Dialog components\MySliderCtrl.h" />
+    <ClInclude Include="Dialog components\NumberEdit.h" />
+    <ClInclude Include="Dialog components\OsdStringDesignerDlg.h" />
+    <ClInclude Include="Dialog components\OutputConfigDlg.h" />
+    <ClInclude Include="Dialog components\RenameDlg.h" />
+    <ClInclude Include="Dialog components\ResolutionEditDlg.h" />
+    <ClInclude Include="Dialog components\SceneLoopDlg.h" />
+    <ClInclude Include="Dialog components\SceneManagerDlg.h" />
+    <ClInclude Include="Dialog components\SourcePropertyDlg.h" />
+    <ClInclude Include="Dialog components\TestPatternDlg.h" />
+    <ClInclude Include="Dialog components\UserDlg.h" />
+    <ClInclude Include="Communication components\EthernetPort.h" />
+    <ClInclude Include="Communication components\SerialPort.h" />
+    <ClInclude Include="BaseFileManager.h" />
+    <ClInclude Include="BaseSceneManager.h" />
+    <ClInclude Include="BnItem.h" />
+    <ClInclude Include="CommunicateManager.h" />
+    <ClInclude Include="GlobalDefines.h" />
+    <ClInclude Include="GlobalManager.h" />
+    <ClInclude Include="InitialManager.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LangManager.h" />
+    <ClInclude Include="LogManager.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MyRibbonControls.h" />
+    <ClInclude Include="OutputManager.h" />
+    <ClInclude Include="PortHelpText.h" />
+    <ClInclude Include="ResolutionManager.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SwitchHeadBar.h" />
+    <ClInclude Include="SwitchPage.h" />
+    <ClInclude Include="SwitchPanelView.h" />
+    <ClInclude Include="SwitchSelectBar.h" />
+    <ClInclude Include="SwitchSourceBar.h" />
+    <ClInclude Include="SysConfManager.h" />
+    <ClInclude Include="UserManager.h" />
+    <ClInclude Include="VideoRouter.h" />
+    <ClInclude Include="VideoRouterDoc.h" />
+    <ClInclude Include="VideoRouterView.h" />
+    <ClInclude Include="WaittingMsg.h" />
+    <ClInclude Include="WrapInitFile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dialog components\BackupAndRestoreDlg.cpp" />
+    <ClCompile Include="Dialog components\ConnectConfigDlg.cpp" />
+    <ClCompile Include="Dialog components\InplaceEdit.cpp" />
+    <ClCompile Include="Dialog components\InputConfigDlg.cpp" />
+    <ClCompile Include="Dialog components\LoginDlg.cpp" />
+    <ClCompile Include="Dialog components\MachinePanelDlg.cpp" />
+    <ClCompile Include="Dialog components\MMListCtrl.cpp" />
+    <ClCompile Include="Dialog components\MySliderCtrl.cpp" />
+    <ClCompile Include="Dialog components\NumberEdit.cpp" />
+    <ClCompile Include="Dialog components\OsdStringDesignerDlg.cpp" />
+    <ClCompile Include="Dialog components\OutputConfigDlg.cpp" />
+    <ClCompile Include="Dialog components\RenameDlg.cpp" />
+    <ClCompile Include="Dialog components\ResolutionEditDlg.cpp" />
+    <ClCompile Include="Dialog components\SceneLoopDlg.cpp" />
+    <ClCompile Include="Dialog components\SceneManagerDlg.cpp" />
+    <ClCompile Include="Dialog components\SourcePropertyDlg.cpp" />
+    <ClCompile Include="Dialog components\TestPatternDlg.cpp" />
+    <ClCompile Include="Dialog components\UserDlg.cpp" />
+    <ClCompile Include="Communication components\EthernetPort.cpp" />
+    <ClCompile Include="Communication components\SerialPort.cpp" />
+    <ClCompile Include="BaseFileManager.cpp" />
+    <ClCompile Include="BaseSceneManager.cpp" />
+    <ClCompile Include="BnItem.cpp" />
+    <ClCompile Include="CommunicateManager.cpp" />
+    <ClCompile Include="GlobalDefines.cpp" />
+    <ClCompile Include="GlobalManager.cpp" />
+    <ClCompile Include="InitialManager.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LangManager.cpp" />
+    <ClCompile Include="LogManager.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MyRibbonControls.cpp" />
+    <ClCompile Include="OutputManager.cpp" />
+    <ClCompile Include="PortHelpText.cpp" />
+    <ClCompile Include="ResolutionManager.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SwitchHeadBar.cpp" />
+    <ClCompile Include="SwitchPage.cpp" />
+    <ClCompile Include="SwitchPanelView.cpp" />
+    <ClCompile Include="SwitchSelectBar.cpp" />
+    <ClCompile Include="SwitchSourceBar.cpp" />
+    <ClCompile Include="SysConfManager.cpp" />
+    <ClCompile Include="UserManager.cpp" />
+    <ClCompile Include="VideoRouter.cpp" />
+    <ClCompile Include="VideoRouterDoc.cpp" />
+    <ClCompile Include="VideoRouterView.cpp" />
+    <ClCompile Include="WaittingMsg.cpp" />
+    <ClCompile Include="WrapInitFile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource.hm" />
+    <None Include="res\Admin.ico" />
+    <None Include="res\admin16.png" />
+    <None Include="res\panel\ajustbarbody.png" />
+    <None Include="res\panel\ajustbarmark.png" />
+    <None Include="res\panel\ajustbarmarkhorz.png" />
+    <None Include="res\backupAndrestore128.bmp" />
+    <None Include="res\Board.ico" />
+    <None Include="res\panel\BorderBottom.png" />
+    <None Include="res\panel\BorderTop.png" />
+    <None Include="res\panel\boxchecked12p.png" />
+    <None Include="res\panel\boxchecked18p.png" />
+    <None Include="res\panel\boxchecked24p.png" />
+    <None Include="res\panel\boxfocused12p.png" />
+    <None Include="res\panel\boxfocused18p.png" />
+    <None Include="res\panel\boxfocused24p.png" />
+    <None Include="res\panel\boxoriginal12p.png" />
+    <None Include="res\panel\boxoriginal18p.png" />
+    <None Include="res\panel\boxoriginal24p.png" />
+    <None Include="res\buttons.bmp" />
+    <None Include="res\category_main_16.bmp" />
+    <None Include="res\category_main_32.bmp" />
+    <None Include="res\category_manage_16.bmp" />
+    <None Include="res\category_manage_32.bmp" />
+    <None Include="res\panel\cvbs_focus.png" />
+    <None Include="res\DDVI.bmp" />
+    <None Include="res\DVI.bmp" />
+    <None Include="res\panel\dvi_focus.png" />
+    <None Include="res\Excel.ico" />
+    <None Include="res\File.ico" />
+    <None Include="res\filelarge.bmp" />
+    <None Include="res\filesmall.bmp" />
+    <None Include="res\panel\focusbox12p.png" />
+    <None Include="res\panel\focusbox18p.png" />
+    <None Include="res\panel\focusbox24p.png" />
+    <None Include="res\General.ico" />
+    <None Include="res\Graph.ico" />
+    <None Include="res\HDMI.bmp" />
+    <None Include="res\panel\headbar.png" />
+    <None Include="res\info.bmp" />
+    <None Include="res\panel\inputcard_4dvi.png" />
+    <None Include="res\panel\inputcard_8cvbs.png" />
+    <None Include="res\key.ico" />
+    <None Include="res\panel\Loading.png" />
+    <None Include="res\login.bmp" />
+    <None Include="res\main.bmp" />
+    <None Include="res\panel\makerbar.png" />
+    <None Include="res\panel\makerbar_dis.png" />
+    <None Include="res\panel\makerbar_focus.png" />
+    <None Include="res\panel\markbar.png" />
+    <None Include="res\panel\markbar_dis.png" />
+    <None Include="res\panel\markbar_focus.png" />
+    <None Include="res\Media.ico" />
+    <None Include="res\menu_char.bmp" />
+    <None Include="res\menu_edid.bmp" />
+    <None Include="res\menu_onetoall.bmp" />
+    <None Include="res\menu_refresh.bmp" />
+    <None Include="res\menu_rename.bmp" />
+    <None Include="res\menu_vga.bmp" />
+    <None Include="res\nav_large.bmp" />
+    <None Include="res\nav_large_hc.bmp" />
+    <None Include="res\NodeImageCustomers.bmp" />
+    <None Include="res\NodeImageOrderDetails.png" />
+    <None Include="res\panel\origbox12p.png" />
+    <None Include="res\panel\origbox18p.png" />
+    <None Include="res\panel\origbox24p.png" />
+    <None Include="res\panel\outputcard_4dvi.png" />
+    <None Include="res\panel\pagedown.png" />
+    <None Include="res\panel\pageleft.png" />
+    <None Include="res\panel\pageleft_ck.png" />
+    <None Include="res\panel\pageleft_dis.png" />
+    <None Include="res\panel\pageleft_focus.png" />
+    <None Include="res\panel\pagenext.png" />
+    <None Include="res\panel\pageprev.png" />
+    <None Include="res\panel\pageprev_ck.png" />
+    <None Include="res\panel\pageprev_dis.png" />
+    <None Include="res\panel\pageprev_focus.png" />
+    <None Include="res\panel\pageright.png" />
+    <None Include="res\pages.bmp" />
+    <None Include="res\pages_hc.bmp" />
+    <None Include="res\pages_small.bmp" />
+    <None Include="res\pages_small_hc.bmp" />
+    <None Include="res\panel\pageup.png" />
+    <None Include="res\panel\portbk.png" />
+    <None Include="res\panel\portbk_dis.png" />
+    <None Include="res\panel\portbk_focus.png" />
+    <None Include="res\panel\refreshbtn.png" />
+    <None Include="res\panel\refreshbtn_ck.png" />
+    <None Include="res\panel\refreshbtn_focus.png" />
+    <None Include="res\panel\refreshicon.png" />
+    <None Include="res\panel\resizebarbody.png" />
+    <None Include="res\panel\resizebarmark.png" />
+    <None Include="res\panel\resizebarmarkhorz.png" />
+    <None Include="res\ribbon_buttons.bmp" />
+    <None Include="res\ribbon_main_large.bmp" />
+    <None Include="res\ribbon_main_small.bmp" />
+    <None Include="res\ribbon_manager_large.bmp" />
+    <None Include="res\ribbon_manager_small.bmp" />
+    <None Include="res\RibbonCategoryA16.bmp" />
+    <None Include="res\RibbonCategoryA32.bmp" />
+    <None Include="res\RibbonCategoryB16.bmp" />
+    <None Include="res\RibbonCategoryB32.bmp" />
+    <None Include="res\SDI.bmp" />
+    <None Include="res\panel\selectbox.png" />
+    <None Include="res\panel\selectbox18p.png" />
+    <None Include="res\panel\selectbox24p.png" />
+    <None Include="res\panel\sigmark_cvbs.png" />
+    <None Include="res\panel\sigmark_dldvi.png" />
+    <None Include="res\panel\sigmark_dvi.png" />
+    <None Include="res\panel\sigmark_hdmi.png" />
+    <None Include="res\panel\sigmark_off.png" />
+    <None Include="res\panel\sigmark_on.png" />
+    <None Include="res\panel\sigmark_sdi.png" />
+    <None Include="res\panel\sigmark_vga.png" />
+    <None Include="res\panel\sigmark_ypbpr.png" />
+    <None Include="res\split.cur" />
+    <None Include="res\Struct.ico" />
+    <None Include="res\SuperAdmin.ico" />
+    <None Include="res\panel\tipshow.bmp" />
+    <None Include="res\panel\tipshow.png" />
+    <None Include="res\Toolbar.bmp" />
+    <None Include="res\Toolbar256.bmp" />
+    <None Include="res\Toolbox.bmp" />
+    <None Include="res\user16.png" />
+    <None Include="res\user_accept16.png" />
+    <None Include="res\user_add16.png" />
+    <None Include="res\user_edit16.png" />
+    <None Include="res\user_remove16.png" />
+    <None Include="res\VGA.bmp" />
+    <None Include="res\VideoRouter" />
+    <None Include="res\VideoRouter.ico" />
+    <None Include="res\VideoRouter.rc2" />
+    <None Include="res\VideoRouterDoc.ico" />
+    <None Include="res\Viso.ico" />
+    <None Include="res\warning.bmp" />
+    <None Include="res\Windows.ico" />
+    <None Include="res\Word.ico" />
+    <None Include="res\writelarge.bmp" />
+    <None Include="res\writesmall.bmp" />
+    <None Include="res\YPbPr.bmp" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="VideoRouter.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="VideoRouter.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

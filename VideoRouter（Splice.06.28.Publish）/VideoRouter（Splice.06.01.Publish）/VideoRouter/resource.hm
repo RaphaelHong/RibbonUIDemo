@@ -1,0 +1,5 @@
+// Microsoft Visual C++ generated Help ID include file.
+// Used by MFCRibbonApp.rc
+//
+#define HIDC_COLORBTN_GRIDLINE_COLOR    0x81500445    // IDD_DLG_TEST_PATTERN
+#define HIDC_COLORBTN_PATTERN_BK_COLOR  0x815003ed    // IDD_DLG_TEST_PATTERN

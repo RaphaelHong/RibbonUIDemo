@@ -1,0 +1,761 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="工具对话框">
+      <UniqueIdentifier>{23dfe9b7-0637-4f50-9a03-4c53b29e943e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="工具对话框\头文件">
+      <UniqueIdentifier>{52a4609e-c6ac-4282-bfad-b3cc01d8b936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="工具对话框\源文件">
+      <UniqueIdentifier>{4f6b397a-a8cf-4f55-a9ab-74ecbaa23496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="通信">
+      <UniqueIdentifier>{99c0dae2-4a70-462f-b7c8-7332c0318438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="通信\头文件">
+      <UniqueIdentifier>{66f2409a-264e-4e13-85f1-4bdcbdcbee18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="通信\源文件">
+      <UniqueIdentifier>{aa7d8f00-e280-4dd2-8438-117d6afc21d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="主工程">
+      <UniqueIdentifier>{2e381165-eaaf-4bc2-9328-63b1907b964d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="主工程\头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="主工程\源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="主工程\资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dialog components\BackupAndRestoreDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\ConnectConfigDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\InplaceEdit.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\InputConfigDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\LoginDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\MachinePanelDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\MMListCtrl.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\MySliderCtrl.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\NumberEdit.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\OsdStringDesignerDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\OutputConfigDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\RenameDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\ResolutionEditDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\SceneLoopDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\SceneManagerDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\SourcePropertyDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\TestPatternDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog components\UserDlg.h">
+      <Filter>工具对话框\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication components\EthernetPort.h">
+      <Filter>通信\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication components\SerialPort.h">
+      <Filter>通信\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseFileManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSceneManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BnItem.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CommunicateManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalDefines.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="InitialManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LangManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LogManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyRibbonControls.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PortHelpText.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ResolutionManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchHeadBar.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchPage.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchPanelView.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchSelectBar.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchSourceBar.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SysConfManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UserManager.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoRouter.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoRouterDoc.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoRouterView.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WaittingMsg.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WrapInitFile.h">
+      <Filter>主工程\头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dialog components\BackupAndRestoreDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\ConnectConfigDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\InplaceEdit.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\InputConfigDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\LoginDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\MachinePanelDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\MMListCtrl.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\MySliderCtrl.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\NumberEdit.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\OsdStringDesignerDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\OutputConfigDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\RenameDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\ResolutionEditDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\SceneLoopDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\SceneManagerDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\SourcePropertyDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\TestPatternDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog components\UserDlg.cpp">
+      <Filter>工具对话框\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication components\EthernetPort.cpp">
+      <Filter>通信\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication components\SerialPort.cpp">
+      <Filter>通信\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseFileManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseSceneManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BnItem.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CommunicateManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalDefines.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InitialManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LangManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LogManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyRibbonControls.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PortHelpText.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ResolutionManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchHeadBar.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchPage.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchPanelView.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchSelectBar.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchSourceBar.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SysConfManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UserManager.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoRouter.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoRouterDoc.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoRouterView.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WaittingMsg.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapInitFile.cpp">
+      <Filter>主工程\源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource.hm">
+      <Filter>主工程\头文件</Filter>
+    </None>
+    <None Include="res\Admin.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\admin16.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\ajustbarbody.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\ajustbarmark.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\ajustbarmarkhorz.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\backupAndrestore128.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Board.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\BorderBottom.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\BorderTop.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxchecked12p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxchecked18p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxchecked24p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxfocused12p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxfocused18p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxfocused24p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxoriginal12p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxoriginal18p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\boxoriginal24p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\buttons.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\category_main_16.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\category_main_32.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\category_manage_16.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\category_manage_32.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\cvbs_focus.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\DDVI.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\DVI.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\dvi_focus.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Excel.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\File.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\filelarge.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\filesmall.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\focusbox12p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\focusbox18p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\focusbox24p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\General.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Graph.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\HDMI.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\headbar.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\info.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\inputcard_4dvi.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\inputcard_8cvbs.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\key.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\Loading.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\login.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\main.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\makerbar.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\makerbar_dis.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\makerbar_focus.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\markbar.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\markbar_dis.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\markbar_focus.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Media.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\menu_char.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\menu_edid.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\menu_onetoall.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\menu_refresh.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\menu_rename.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\menu_vga.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\nav_large.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\nav_large_hc.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\NodeImageCustomers.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\NodeImageOrderDetails.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\origbox12p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\origbox18p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\origbox24p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\outputcard_4dvi.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pagedown.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageleft.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageleft_ck.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageleft_dis.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageleft_focus.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pagenext.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageprev.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageprev_ck.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageprev_dis.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageprev_focus.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageright.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\pages.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\pages_hc.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\pages_small.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\pages_small_hc.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\pageup.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\portbk.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\portbk_dis.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\portbk_focus.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\refreshbtn.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\refreshbtn_ck.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\refreshbtn_focus.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\refreshicon.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\resizebarbody.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\resizebarmark.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\resizebarmarkhorz.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\ribbon_buttons.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\ribbon_main_large.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\ribbon_main_small.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\ribbon_manager_large.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\ribbon_manager_small.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\RibbonCategoryA16.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\RibbonCategoryA32.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\RibbonCategoryB16.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\RibbonCategoryB32.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\SDI.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\selectbox.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\selectbox18p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\selectbox24p.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_cvbs.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_dldvi.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_dvi.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_hdmi.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_off.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_on.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_sdi.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_vga.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\sigmark_ypbpr.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\split.cur">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Struct.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\SuperAdmin.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\tipshow.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\panel\tipshow.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Toolbar256.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Toolbox.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\user16.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\user_accept16.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\user_add16.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\user_edit16.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\user_remove16.png">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\VGA.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\VideoRouter">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\VideoRouter.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\VideoRouter.rc2">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\VideoRouterDoc.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Viso.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\warning.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Windows.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\Word.ico">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\writelarge.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\writesmall.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="res\YPbPr.bmp">
+      <Filter>主工程\资源文件</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="VideoRouter.rc">
+      <Filter>主工程\资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
